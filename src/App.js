@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { Transition, animated } from "react-spring/renderprops";
+import Component1 from "./components/Compo1";
+import Component2 from "./components/Compo2";
+import Component3 from "./components/Compo3";
 
-function App() {
+const App = () => {
+  const [showComponent3, setShowComponent3] = useState(false);
+
+  const toggle = () => {
+    setShowComponent3(!showComponent3);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Component1 />
+      <Component2 toggle={toggle} />
+      <Transition
+        native
+        items={showComponent3}
+        from={{ opacity: 0 }}
+        enter={{ opacity: 1 }}
+        leave={{ opacity: 0 }}
+      >
+        {(show) =>
+          show &&
+          ((props) => (
+            <animated.div style={props}>
+              <Component3 />
+            </animated.div>
+          ))
+        }
+      </Transition>
     </div>
   );
-}
+};
 
 export default App;
